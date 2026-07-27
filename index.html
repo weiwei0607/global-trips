@@ -331,6 +331,9 @@ function renderCards() {
 }
 
 function showDetail(id) {
+  window.currentTripId = id;
+  window.selectedRestaurants = {};
+  
   const item = itineraries.find(i => i.id === id);
   if (!item) return;
 
@@ -379,7 +382,32 @@ function closeModal() {
 
 document.getElementById('searchInput').addEventListener('input', e => {
   searchQuery = e.target.value;
-  renderCards();
+  
+
+function updateCost() {
+  const id = window.currentTripId;
+  const item = itineraries.find(i => i.id === id);
+  if (!item) return;
+  
+  let extraCost = 0;
+  item.stops.forEach((s, idx) => {
+    if (s.restaurants) {
+      const selected = document.querySelector(`input[name="rest_\${idx}"]:checked`);
+      if (selected) {
+        const restIdx = parseInt(selected.value);
+        const rest = s.restaurants[restIdx];
+        extraCost += rest.price * 30; // 轉為 TWD
+      }
+    }
+  });
+  
+  const costDisplay = document.getElementById('extraCostDisplay');
+  if (costDisplay) {
+    costDisplay.innerHTML = extraCost > 0 ? `<div style="color: #e74c3c; margin-top: 8px;">+ 用餐額外成本：NT\$${extraCost.toLocaleString()}</div>` : '';
+  }
+}
+
+renderCards();
 });
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -389,7 +417,32 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.classList.add('active');
     if (filter === 'region') filterRegion = btn.dataset.value;
     if (filter === 'budget') filterBudget = btn.dataset.value;
-    renderCards();
+    
+
+function updateCost() {
+  const id = window.currentTripId;
+  const item = itineraries.find(i => i.id === id);
+  if (!item) return;
+  
+  let extraCost = 0;
+  item.stops.forEach((s, idx) => {
+    if (s.restaurants) {
+      const selected = document.querySelector(`input[name="rest_\${idx}"]:checked`);
+      if (selected) {
+        const restIdx = parseInt(selected.value);
+        const rest = s.restaurants[restIdx];
+        extraCost += rest.price * 30; // 轉為 TWD
+      }
+    }
+  });
+  
+  const costDisplay = document.getElementById('extraCostDisplay');
+  if (costDisplay) {
+    costDisplay.innerHTML = extraCost > 0 ? `<div style="color: #e74c3c; margin-top: 8px;">+ 用餐額外成本：NT\$${extraCost.toLocaleString()}</div>` : '';
+  }
+}
+
+renderCards();
   });
 });
 
@@ -401,6 +454,31 @@ document.getElementById('luckyBtn').addEventListener('click', () => {
 document.getElementById('modal').addEventListener('click', e => {
   if (e.target === document.getElementById('modal')) closeModal();
 });
+
+
+
+function updateCost() {
+  const id = window.currentTripId;
+  const item = itineraries.find(i => i.id === id);
+  if (!item) return;
+  
+  let extraCost = 0;
+  item.stops.forEach((s, idx) => {
+    if (s.restaurants) {
+      const selected = document.querySelector(`input[name="rest_\${idx}"]:checked`);
+      if (selected) {
+        const restIdx = parseInt(selected.value);
+        const rest = s.restaurants[restIdx];
+        extraCost += rest.price * 30; // 轉為 TWD
+      }
+    }
+  });
+  
+  const costDisplay = document.getElementById('extraCostDisplay');
+  if (costDisplay) {
+    costDisplay.innerHTML = extraCost > 0 ? `<div style="color: #e74c3c; margin-top: 8px;">+ 用餐額外成本：NT\$${extraCost.toLocaleString()}</div>` : '';
+  }
+}
 
 renderCards();
 </script>
