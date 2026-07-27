@@ -305,7 +305,9 @@ function renderCards() {
     const budget = parseBudget(item.budget);
     const avgBudget = Math.round((budget.low + budget.high) / 2);
     const flight = flightCosts[item.region] || 10000;
-    const tripCost = Math.round(((budget.low + budget.high) / 2) * parseInt(item.duration) * 30);
+    const durationHours = parseInt(item.duration);
+    const dayFraction = durationHours / 24;
+    const tripCost = Math.round(avgBudget * dayFraction * 30);  // 轉換為 TWD
     const totalTWD = tripCost + flight;
 
     return `
