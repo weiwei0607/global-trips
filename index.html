@@ -320,6 +320,9 @@ function renderCards() {
           <span class="tag">\${item.region}</span>
           <span class="tag">\${item.country}</span>
         </div>
+        <div style="font-size: 0.85rem; margin: 8px 0; padding: 8px; background: #f9f9f9; border-radius: 4px;">
+          <strong style="color: #667eea;">🚌 \${item.transport}</strong> — 約 NT\$\${Math.round(tripCost * 0.35).toLocaleString()}
+        </div>
         <div class="card-stops">
           \${item.stops.slice(1, 3).map(s => '<div><span class="stop-time">' + s.time + '</span> ' + s.name + '</div>').join('')}
         </div>
